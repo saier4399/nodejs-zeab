@@ -2,12 +2,12 @@
 NEZHA_SERVER=${NEZHA_SERVER:-''}
 NEZHA_PORT=${NEZHA_PORT:-''}
 NEZHA_KEY=${NEZHA_KEY:-''}
+NEZHA_TLS=${NEZHA_TLS:-'--tls'}
 ARGO_DOMAIN=${ARGO_DOMAIN:-''}
 ARGO_AUTH=${ARGO_AUTH:-''}
 WSPATH=${WSPATH:-'argo'}
 UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
 
-rm -rf argo.log list.txt sub.txt
 set_download_url() {
   local program_name="$1"
   local default_url="$2"
@@ -52,6 +52,10 @@ sleep 6
 download_program "cc" "https://github.com/fscarmen2/X-for-Botshard-ARM/raw/main/cloudflared" "https://github.com/fscarmen2/X-for-Stozu/raw/main/cloudflared"
 sleep 6
 
+cleanup_files() {
+  rm -rf argo.log list.txt sub.txt encoded.txt
+}
+
 argo_type() {
   if [[ -z $ARGO_AUTH || -z $ARGO_DOMAIN ]]; then
     echo "ARGO_AUTH 或 ARGO_DOMAIN 为空,使用Quick Tunnels"
@@ -82,26 +86,28 @@ run() {
   if [ -e nm ]; then
     chmod +x nm
     if [ -n "$NEZHA_SERVER" ] && [ -n "$NEZHA_PORT" ] && [ -n "$NEZHA_KEY" ]; then
-    nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} --tls >/dev/null 2>&1 &
+    nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &
+    keep1="nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &"
     fi
   fi
 
   if [ -e web ]; then
     chmod +x web
     nohup ./web -c ./config.json >/dev/null 2>&1 &
+    keep2="nohup ./web -c ./config.json >/dev/null 2>&1 &"
   fi
 
   if [ -e cc ]; then
     chmod +x cc
 if [[ $ARGO_AUTH =~ ^[A-Z0-9a-z=]{120,250}$ ]]; then
-  nohup ./cc tunnel --edge-ip-version auto --no-autoupdate --protocol http2 --logfile argo.log --loglevel info run --token ${ARGO_AUTH} >/dev/null 2>&1 &
+  args="tunnel --edge-ip-version auto --no-autoupdate --protocol http2 --logfile argo.log --loglevel info run --token ${ARGO_AUTH}"
+elif [[ $ARGO_AUTH =~ TunnelSecret ]]; then
+  args="tunnel --edge-ip-version auto --config tunnel.yml run"
 else
-  if [[ $ARGO_AUTH =~ TunnelSecret ]]; then
-    nohup ./cc tunnel --edge-ip-version auto --config tunnel.yml run >/dev/null 2>&1 &
-  else
-    nohup ./cc tunnel --edge-ip-version auto --no-autoupdate --protocol http2 --logfile argo.log --loglevel info --url http://localhost:8080 >/dev/null 2>&1 &
-  fi
+  args="tunnel --edge-ip-version auto --no-autoupdate --protocol http2 --logfile argo.log --loglevel info --url http://localhost:8080"
 fi
+nohup ./cc $args >/dev/null 2>&1 &
+keep3="nohup ./cc $args >/dev/null 2>&1 &"
   fi
 } 
 
@@ -333,34 +339,82 @@ generate_config() {
 }
 EOF
 }
+
+cleanup_files
+sleep 2
 generate_config
 sleep 3
 argo_type
 sleep 3
 run
-sleep 20
+sleep 15
 
-if [[ -n $ARGO_AUTH ]]; then
-  argo="$ARGO_DOMAIN"
-else
-  argo=$(cat argo.log | grep trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
-fi
-sleep 2
-echo $argo
+function get_argo_domain() {
+  if [[ -n $ARGO_AUTH ]]; then
+    echo "$ARGO_DOMAIN"
+  else
+    cat argo.log | grep trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}'
+  fi
+}
 
 isp=$(curl -s https://speed.cloudflare.com/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
 sleep 3
 
-urlpath="/$WSPATH-vless"
+generate_links() {
+  argo=$(get_argo_domain)
+  sleep 1
 
-echo -e vless链接已经生成, www.speedtest.net 可替换为CF优选IP'\n' > list.txt 
-echo "vless://$UUID@www.speedtest.net:443?encryption=none&security=tls&type=ws&host=$argo&path=$urlpath#$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')_tls" | tee -a list.txt sub.txt
-echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >> list.txt
-echo "vless://$UUID@www.speedtest.net:80?encryption=none&security=none&type=ws&host=$argo&path=$urlpath#$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')" | tee -a list.txt 
-echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095 >> list.txt
+  VMESS="{ \"v\": \"2\", \"ps\": \"${isp}-vm\", \"add\": \"icook.hk\", \"port\": \"443\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${argo}\", \"path\": \"/${WSPATH}-vmess?ed=2048\", \"tls\": \"tls\", \"sni\": \"${argo}\", \"alpn\": \"\" }"
 
-cat list.txt
-echo -e "\n信息已经保存在 list.txt"
+  cat > list.txt <<EOF
+*******************************************
+V2-rayN:
+----------------------------
+vless://${UUID}@icook.hk:443?encryption=none&security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-vless?ed=2048#${isp}-Vl
+----------------------------
+vmess://$(echo "$VMESS" | base64 -w0)
+----------------------------
+trojan://${UUID}@icook.hk:443?security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-trojan?ed=2048#${isp}-Tr
+----------------------------
+ss://$(echo "chacha20-ietf-poly1305:${UUID}@icook.hk:443" | base64 -w0)@icook.hk:443#${isp}-SS
+由于该软件导出的链接不全，请自行处理如下: 传输协议: WS ， 伪装域名: ${argo} ，路径: /${WSPATH}-shadowsocks?ed=2048 ， 传输层安全: tls ， sni: ${argo}
+*******************************************
+Shadowrocket:
+----------------------------
+vless://${UUID}@icook.hk:443?encryption=none&security=tls&type=ws&host=${argo}&path=/${WSPATH}-vless?ed=2048&sni=${argo}#${isp}-Vl
+----------------------------
+vmess://$(echo "none:${UUID}@icook.hk:443" | base64 -w0)?remarks=${isp}-Vm&obfsParam=${argo}&path=/${WSPATH}-vmess?ed=2048&obfs=websocket&tls=1&peer=${argo}&alterId=0
+----------------------------
+trojan://${UUID}@icook.hk:443?peer=${argo}&plugin=obfs-local;obfs=websocket;obfs-host=${argo};obfs-uri=/${WSPATH}-trojan?ed=2048#${isp}-Tr
+----------------------------
+ss://$(echo "chacha20-ietf-poly1305:${UUID}@icook.hk:443" | base64 -w0)?obfs=wss&obfsParam=${argo}&path=/${WSPATH}-shadowsocks?ed=2048#${isp}-Ss
+*******************************************
+Clash:
+----------------------------
+- {name: ${isp}-Vless, type: vless, server: icook.hk, port: 443, uuid: ${UUID}, tls: true, servername: ${argo}, skip-cert-verify: false, network: ws, ws-opts: {path: /${WSPATH}-vless?ed=2048, headers: { Host: ${argo}}}, udp: true}
+----------------------------
+- {name: ${isp}-Vmess, type: vmess, server: icook.hk, port: 443, uuid: ${UUID}, alterId: 0, cipher: none, tls: true, skip-cert-verify: true, network: ws, ws-opts: {path: /${WSPATH}-vmess?ed=2048, headers: {Host: ${argo}}}, udp: true}
+----------------------------
+- {name: ${isp}-Trojan, type: trojan, server: icook.hk, port: 443, password: ${UUID}, udp: true, tls: true, sni: ${argo}, skip-cert-verify: false, network: ws, ws-opts: { path: /${WSPATH}-trojan?ed=2048, headers: { Host: ${argo} } } }
+----------------------------
+- {name: ${isp}-Shadowsocks, type: ss, server: icook.hk, port: 443, cipher: chacha20-ietf-poly1305, password: ${UUID}, plugin: v2ray-plugin, plugin-opts: { mode: websocket, host: ${argo}, path: /${WSPATH}-shadowsocks?ed=2048, tls: true, skip-cert-verify: false, mux: false } }
+*******************************************
+EOF
+
+  cat > encode.txt <<EOF
+vless://${UUID}@icook.hk:443?encryption=none&security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-vless?ed=2048#${isp}-Vl
+vmess://$(echo "$VMESS" | base64 -w0)
+trojan://${UUID}@icook.hk:443?security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-trojan?ed=2048#${isp}-Tr
+EOF
+
+base64 -w0 encode.txt > sub.txt 
+
+  cat list.txt
+  echo -e "\n节点信息已保存在 list.txt"
+}
+
+generate_links
+
 
 if [ -n "$STARTUP" ]; then
   if [[ "$STARTUP" == *"java"* ]]; then
@@ -369,3 +423,67 @@ if [ -n "$STARTUP" ]; then
     ./bedrock_server1
   fi
 fi
+
+function start_nm_program() {
+if [ -n "$keep1" ]; then
+  if [ -z "$pid" ]; then
+    echo "程序'$program'未运行，正在启动..."
+    eval "$command"
+  else
+    echo "程序'$program'正在运行，PID: $pid"
+  fi
+else
+  echo "程序'$program'不需要启动，无需执行任何命令"
+fi
+}
+
+function start_web_program() {
+  if [ -z "$pid" ]; then
+    echo "程序'$program'未运行，正在启动..."
+    eval "$command"
+  else
+    echo "程序'$program'正在运行，PID: $pid"
+  fi
+}
+
+function start_cc_program() {
+  if [ -z "$pid" ]; then
+    echo "程序'$program'未运行，正在启动..."
+    cleanup_files
+    sleep 2
+    eval "$command"
+    sleep 5
+    generate_links
+    sleep 3
+  else
+    echo "程序'$program'正在运行，PID: $pid"
+  fi
+}
+
+function start_program() {
+  local program=$1
+  local command=$2
+
+  pid=$(pidof "$program")
+
+  if [ "$program" = "nm" ]; then
+    start_nm_program
+  elif [ "$program" = "web" ]; then
+    start_web_program
+  elif [ "$program" = "cc" ]; then
+    start_cc_program
+  fi
+}
+
+programs=("nm" "web" "cc")
+commands=("$keep1" "$keep2" "$keep3")
+
+while true; do
+  for ((i=0; i<${#programs[@]}; i++)); do
+    program=${programs[i]}
+    command=${commands[i]}
+
+    start_program "$program" "$command"
+  done
+  sleep 60
+done
