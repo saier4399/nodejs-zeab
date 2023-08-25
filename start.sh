@@ -53,7 +53,7 @@ download_program "cc" "https://github.com/fscarmen2/X-for-Botshard-ARM/raw/main/
 sleep 6
 
 cleanup_files() {
-  rm -rf argo.log list.txt sub.txt encoded.txt
+  rm -rf argo.log list.txt sub.txt encode.txt
 }
 
 argo_type() {
