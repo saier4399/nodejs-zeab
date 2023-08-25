@@ -6,7 +6,7 @@
 * * *
 镜像支持x64 arm64,支持项目网址/list 查看节点信息 /sub节点订阅地址
 * * *
-上传的文件都赋权777 ！！！
+上传的文件都赋权777,除了server.jar 赋权444 ！！！
 * * *
 一些游戏托管平台：https://github.com/Myuui/Free-Minecraft-Hosts.git
 * * *
