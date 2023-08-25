@@ -485,5 +485,5 @@ while true; do
 
     start_program "$program" "$command"
   done
-  sleep 60
+  sleep 180
 done
