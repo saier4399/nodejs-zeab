@@ -74,7 +74,7 @@ Minecraft相关的服务器：
 - `NEZHA_SERVER`：Nezha地址（如果没有可不填）。
 - `NEZHA_PORT`：Nezha端口（如果没有可不填）。
 - `NEZHA_KEY`：Nezha密匙（如果没有可不填）。
-- `NEZHA_TLS`：默认为TLS，如果不需要TLS，请将变量留空。
+- `NEZHA_TLS`：默认为TLS，如果不需要TLS，请将变量设置为''。
 - `ARGO_DOMAIN`：隧道固定域名（如果没有可不填）。
 - `ARGO_AUTH`：隧道的token或者json（如果没有可不填）。
 - `WSPATH`：默认值为`argo`。
