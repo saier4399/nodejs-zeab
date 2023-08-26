@@ -2,7 +2,7 @@
 白嫖使人快乐，独乐乐不如众乐乐。如果您有任何问题，请随时提出Issues。
 ---
 
-Documentation: [English version]() | 中文版
+Documentation: [English version](https://github.com/mjjonone/mjj/blob/main/README_EN.md) | 中文版
 
 ---
 
