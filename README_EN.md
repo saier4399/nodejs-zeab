@@ -70,7 +70,7 @@ NEZHA_PORT=     // Nezha port \[Leave empty if not available\]
 
 NEZHA_KEY=      // Nezha key \[Leave empty if not available\]
 
-NEZHA_TLS Defaults to TLS, leave variable empty for no TLS
+NEZHA_TLS Defaults to TLS, leave '' for no TLS
 
 ARGO_DOMAIN=  // Fixed domain name for tunnel \[Leave empty if not available\]
 
