@@ -2,11 +2,18 @@
 NEZHA_SERVER=${NEZHA_SERVER:-''}
 NEZHA_PORT=${NEZHA_PORT:-''}
 NEZHA_KEY=${NEZHA_KEY:-''}
-NEZHA_TLS=${NEZHA_TLS:-'--tls'}
+TLS=${TLS:-'1'}
 ARGO_DOMAIN=${ARGO_DOMAIN:-''}
 ARGO_AUTH=${ARGO_AUTH:-''}
 WSPATH=${WSPATH:-'argo'}
 UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
+
+if [ "$TLS" -eq 0 ]; then
+  NEZHA_TLS=''
+elif [ "$TLS" -eq 1 ]; then
+  NEZHA_TLS='--tls'
+fi
+
 
 set_download_url() {
   local program_name="$1"
@@ -58,7 +65,7 @@ cleanup_files() {
 
 argo_type() {
   if [[ -z $ARGO_AUTH || -z $ARGO_DOMAIN ]]; then
-    echo "ARGO_AUTH 或 ARGO_DOMAIN 为空,使用Quick Tunnels"
+    echo "ARGO_AUTH or ARGO_DOMAIN is empty, use Quick Tunnels"
     return
   fi
 
@@ -77,14 +84,14 @@ ingress:
   - service: http_status:404
 EOF
   else
-    echo "ARGO_AUTH 不匹配 TunnelSecret"
+    echo "ARGO_AUTH Mismatch TunnelSecret"
   fi
 }
 
 
 run() {
   if [ -e nm ]; then
-  
+
     if [ -n "$NEZHA_SERVER" ] && [ -n "$NEZHA_PORT" ] && [ -n "$NEZHA_KEY" ]; then
     nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &
     keep1="nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &"
@@ -429,28 +436,28 @@ fi
 function start_nm_program() {
 if [ -n "$keep1" ]; then
   if [ -z "$pid" ]; then
-    echo "程序'$program'未运行，正在启动..."
+    echo "course'$program'Not running, starting..."
     eval "$command"
   else
-    echo "程序'$program'正在运行，PID: $pid"
+    echo "course'$program'running，PID: $pid"
   fi
 else
-  echo "程序'$program'不需要启动，无需执行任何命令"
+  echo "course'$program'No need"
 fi
 }
 
 function start_web_program() {
   if [ -z "$pid" ]; then
-    echo "程序'$program'未运行，正在启动..."
+    echo "course'$program'Not running, starting..."
     eval "$command"
   else
-    echo "程序'$program'正在运行，PID: $pid"
+    echo "course'$program'running，PID: $pid"
   fi
 }
 
 function start_cc_program() {
   if [ -z "$pid" ]; then
-    echo "程序'$program'未运行，正在启动..."
+    echo "'$program'Not running, starting..."
     cleanup_files
     sleep 2
     eval "$command"
@@ -458,7 +465,7 @@ function start_cc_program() {
     generate_links
     sleep 3
   else
-    echo "程序'$program'正在运行，PID: $pid"
+    echo "course'$program'running，PID: $pid"
   fi
 }
 

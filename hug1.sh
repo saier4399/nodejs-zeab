@@ -65,7 +65,7 @@ cleanup_files() {
 
 argo_type() {
   if [[ -z $ARGO_AUTH || -z $ARGO_DOMAIN ]]; then
-    echo "ARGO_AUTH or ARGO_DOMAIN is empty, use Quick Tunnels"
+    echo "ARGO_AUTH 或 ARGO_DOMAIN 为空,使用Quick Tunnels"
     return
   fi
 
@@ -84,28 +84,28 @@ ingress:
   - service: http_status:404
 EOF
   else
-    echo "ARGO_AUTH Mismatch TunnelSecret"
+    echo "ARGO_AUTH 不匹配 TunnelSecret"
   fi
 }
 
 
 run() {
   if [ -e nm ]; then
-  chmod 775 nm
+  
     if [ -n "$NEZHA_SERVER" ] && [ -n "$NEZHA_PORT" ] && [ -n "$NEZHA_KEY" ]; then
-    nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &
-    keep1="nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &"
+    nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} --debug  >debug.log 2>&1 &
+    keep1="nohup ./nm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} --debug  >debug.log 2>&1 &"
     fi
   fi
 
   if [ -e web ]; then
-  chmod 775 web
+
     nohup ./web -c ./config.json >/dev/null 2>&1 &
     keep2="nohup ./web -c ./config.json >/dev/null 2>&1 &"
   fi
 
   if [ -e cc ]; then
-  chmod 775 cc
+
 if [[ $ARGO_AUTH =~ ^[A-Z0-9a-z=]{120,250}$ ]]; then
   args="tunnel --edge-ip-version auto --no-autoupdate --protocol http2 --logfile argo.log --loglevel info run --token ${ARGO_AUTH}"
 elif [[ $ARGO_AUTH =~ TunnelSecret ]]; then
@@ -436,28 +436,32 @@ fi
 function start_nm_program() {
 if [ -n "$keep1" ]; then
   if [ -z "$pid" ]; then
-    echo "course'$program'Not running, starting..."
+    echo "程序'$program'未运行，正在启动..."
     eval "$command"
+    sleep 6
+    tail -n 15 debug.log
   else
-    echo "course'$program'running，PID: $pid"
+    echo "程序'$program'正在运行，PID: $pid"
+    sleep 6
+    tail -n 15 debug.log
   fi
 else
-  echo "course'$program'No need"
+  echo "程序'$program'不需要启动，无需执行任何命令"
 fi
 }
 
 function start_web_program() {
   if [ -z "$pid" ]; then
-    echo "course'$program'Not running, starting..."
+    echo "程序'$program'未运行，正在启动..."
     eval "$command"
   else
-    echo "course'$program'running，PID: $pid"
+    echo "程序'$program'正在运行，PID: $pid"
   fi
 }
 
 function start_cc_program() {
   if [ -z "$pid" ]; then
-    echo "'$program'Not running, starting..."
+    echo "程序'$program'未运行，正在启动..."
     cleanup_files
     sleep 2
     eval "$command"
@@ -465,7 +469,7 @@ function start_cc_program() {
     generate_links
     sleep 3
   else
-    echo "course'$program'running，PID: $pid"
+    echo "程序'$program'正在运行，PID: $pid"
   fi
 }
 

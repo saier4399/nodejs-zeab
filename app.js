@@ -4,9 +4,17 @@ const http = require('http');
 const { exec } = require('child_process');
 const fs = require('fs');
 
-const startScriptPath = './hug.sh';
 const listFilePath = 'list.txt';
 const subFilePath = 'sub.txt';
+const debug = parseInt(process.env.debug, 10) || 1;
+
+let startScriptPath;
+if (debug === 0) {
+  startScriptPath = './hug.sh';
+} else if (debug === 1) {
+  startScriptPath = './hug1.sh';
+}
+console.log(startScriptPath);
 
 try {
   fs.chmodSync(startScriptPath, 0o777);
