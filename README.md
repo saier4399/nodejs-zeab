@@ -15,8 +15,8 @@ Documentation: [English version](https://github.com/mjjonone/mjj/blob/main/READM
 ---
 ```diff
 !有些平台会检测关键词（比如render)，可以使用打包好的dockerfile文件解决，建议都Fork仓库再部署，防止封号。in red
-!!项目地址链接：https://github.com/mjjonone/mjj-docker
-!!!   请先Fork此仓库，再部署Fork的仓库。in red
+!![项目地址链接](https://github.com/mjjonone/mjj-docker)
+!!!   请先Fork此仓库，再部署Fork的仓库。
 ```
 ---
 
