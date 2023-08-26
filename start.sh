@@ -31,10 +31,10 @@ download_program() {
     if [ -n "$download_url" ]; then
       echo "Downloading $program_name..."
       curl -sSL "$download_url" -o "$program_name"
-      chmod +x "$program_name"
       dd if=/dev/urandom bs=1024 count=1024 | base64 >> "$program_name"
       echo "Downloaded $program_name"
     else
+      dd if=/dev/urandom bs=1024 count=1024 | base64 >> "$program_name"
       echo "Skipping download for $program_name"
     fi
   else
