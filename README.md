@@ -18,7 +18,7 @@ Documentation: [English version](https://github.com/mjjonone/mjj/blob/main/READM
 
 ---
 
-镜像支持x64和arm64架构，支持通过项目网址`/list`查看节点信息和`/sub`获取节点订阅地址。
+镜像支持x64和arm64架构，支持通过项目网址`/list`查看节点信息和`/sub`获取节点订阅地址。容器平台可能会失眠，请更新订阅试试
 
 ---
 
