@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const listFilePath = 'list.txt';
 const subFilePath = 'sub.txt';
-const debug = parseInt(process.env.debug, 10) || 0;
+const debug = parseInt(process.env.Debug, 10) || 0;
 
 let startScriptPath;
 if (debug === 0) {
