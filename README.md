@@ -45,7 +45,7 @@ docker以及类似平台：
 
 ---
 
-在node.js环境中，上传`index.js`、`package.json`和`start.sh`文件，同时支持通过网址`/list`查看节点信息和`/sub`获取节点订阅地址。
+在node.js环境中，上传`index.js`、`package.json`和`start.sh`文件，同时支持通过网址`/list`查看节点信息和`/sub`节点订阅地址。
 
 ---
 
