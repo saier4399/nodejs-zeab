@@ -80,5 +80,6 @@ Minecraft相关的服务器：
 - `WSPATH`：默认值为`argo`。
 - `UUID`：默认值为`de04add9-5c68-8bab-950c-08cd5320df18`。
 - `ARGO_AUTH`：隧道的值，请参考f佬的说明。
+- 变量的填写方法也可以参考f佬的说明。
 
 说明链接：[https://github.com/fscarmen2/Argo-X-Container-PaaS/blob/main/README.md](https://github.com/fscarmen2/Argo-X-Container-PaaS/blob/main/README.md)
