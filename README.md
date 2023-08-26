@@ -72,7 +72,7 @@ Minecraft相关的服务器：
 
 变量说明：
 
-- `debug`：默认为0，1代表开启，0是关闭。检测nezha的连通性
+- `Debug`：默认为0，1代表开启，0是关闭。检测nezha的连通性
 - `NEZHA_SERVER`：Nezha地址（如果没有可不填）。
 - `NEZHA_PORT`：Nezha端口（如果没有可不填）。
 - `NEZHA_KEY`：Nezha密匙（如果没有可不填）。
