@@ -13,8 +13,9 @@ Documentation: [English version](https://github.com/mjjonone/mjj/blob/main/READM
 已打包成的镜像名为`mjjonone/mjj:latest`，变量设置如下：容器的`PORT`变量可设置为3000、7860等，具体根据容器平台的要求进行设置，一般可以将`PORT`设置为3000。
 
 ---
-** **有些平台会检测关键词（比如render)，可以使用打包好的dockerfile文件解决，建议都<span style="color:red;">Fork仓库再部署</span>，防止封号。项目地址链接：[https://github.com/mjjonone/mjj-docker](https://github.com/mjjonone/mjj-docker)， 请先<span style="color:red;">Fork此仓库</span>，再部署Fork的仓库。
-
+```diff
+!有些平台会检测关键词（比如render)，可以使用打包好的dockerfile文件解决，建议都Fork仓库再部署，防止封号。项目地址链接：[https://github.com/mjjonone/mjj-docker](https://github.com/mjjonone/mjj-docker)， 请先Fork此仓库，再部署Fork的仓库。in red
+```
 ---
 
 镜像支持x64和arm64架构，支持通过项目网址`/list`查看节点信息和`/sub`获取节点订阅地址。容器平台可能会失眠，请更新订阅试试
