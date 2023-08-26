@@ -4,7 +4,7 @@
 * * *
 已打包成的镜像名 mjjonone/mjj:latest，变量设置同下，容器PORT变量可设置为3000,7860等,可根据容器平台要求设置，一般可以设置PORT=3000
 * * *
-有些平台会检测关键词，使用打包好的dockerfile文件解决，项目地址链接：https://github.com/mjjonone/mjj-docker
+有些平台会检测关键词，使用打包好的dockerfile文件解决，项目地址链接：https://github.com/mjjonone/mjj-docker,请fork此仓库，再部署fork的仓库
 * * *
 镜像支持x64 arm64,支持项目网址/list 查看节点信息 /sub节点订阅地址
 * * *
