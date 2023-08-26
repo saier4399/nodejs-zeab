@@ -45,6 +45,8 @@ NEZHA_PORT=     //nezha端口  【未有可不填】
 * * *
 NEZHA_KEY=      //nezha密匙 【未有可不填】
 * * *
+NEZHA_TLS 默认TLS,不要TLS,变量留空
+* * *
 ARGO_DOMAIN=  //隧道固定域名  【未有可不填】
 * * *
 ARGO_AUTH=    //隧道的token或者json  【未有可不填】
