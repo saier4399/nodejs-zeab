@@ -22,7 +22,7 @@ Documentation: [English version](https://github.com/mjjonone/mjj/blob/main/READM
 
 ---
 
-上传的文件都赋予了权限777，除了`server.jar`，它的权限被设置为444。
+游戏托管平台需要上传的文件要赋予权限777，除了`server.jar`，它的权限要设置为444。
 
 ---
 
