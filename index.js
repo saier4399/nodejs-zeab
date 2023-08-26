@@ -36,33 +36,47 @@ startScript.on('close', (code) => {
 
 
 const server = http.createServer((req, res) => {
+
   if (req.url === '/') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+
+    res.writeHead(200);
     res.end('hello world');
+
   } else if (req.url === '/list') {
+
     fs.readFile(listFilePath, 'utf8', (error, data) => {
+    
       if (error) {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.writeHead(500);
         res.end('Error reading file');
-      } else {
-        res.writeHead(300, { 'Content-Type': 'text/plain; charset=utf-8' });
+      } else {        
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end(data);
       }
+    
     });
+
   } else if (req.url === '/sub') {
+
     fs.readFile(subFilePath, 'utf8', (error, data) => {
+    
       if (error) {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.writeHead(500);
         res.end('Error reading file');
       } else {
-        res.writeHead(300, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end(data);
       }
+    
     });
+  
   } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
+
+    res.writeHead(404);
     res.end('Not found');
+  
   }
+
 });
 
 server.listen(port, () => {

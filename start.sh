@@ -49,7 +49,7 @@ sleep 6
 download_program "web" "https://github.com/fscarmen2/X-for-Botshard-ARM/raw/main/web.js" "https://github.com/fscarmen2/X-for-Stozu/raw/main/web.js"
 sleep 6
 
-download_program "cc" "https://github.com/fscarmen2/X-for-Botshard-ARM/raw/main/cloudflared" "https://github.com/fscarmen2/X-for-Stozu/raw/main/cloudflared"
+download_program "cc" "https://github.com/cloudflare/cloudflared/releases/download/2023.8.0/cloudflared-linux-arm64" "https://github.com/cloudflare/cloudflared/releases/download/2023.8.0/cloudflared-linux-amd64"
 sleep 6
 
 cleanup_files() {
@@ -368,6 +368,8 @@ generate_links() {
 
   cat > list.txt <<EOF
 *******************************************
+icook.hk 可替换为CF优选IP,端口 443 可改为 2053 2083 2087 2096 8443
+----------------------------
 V2-rayN:
 ----------------------------
 vless://${UUID}@icook.hk:443?encryption=none&security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-vless?ed=2048#${isp}-Vl
