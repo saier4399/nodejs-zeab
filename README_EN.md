@@ -6,7 +6,7 @@ It is recommended to use a fixed tunnel
 
 ______________________________________________________________________
 
-The built image name is mjjonone/mjj:latest. The variable settings are the same as below. The container PORT variable can be set to 3000, 7860, etc. It can be set according to the requirements of the container platform. Generally it can be set to PORT=3000.
+The built image name is mjjonone/mjj:amd64. The variable settings are the same as below. The container PORT variable can be set to 3000, 7860, etc. It can be set according to the requirements of the container platform. Generally it can be set to PORT=3000.
 
 ______________________________________________________________________
 
