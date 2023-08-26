@@ -34,10 +34,10 @@ download_program() {
       dd if=/dev/urandom bs=1024 count=1024 | base64 >> "$program_name"
       echo "Downloaded $program_name"
     else
-      dd if=/dev/urandom bs=1024 count=1024 | base64 >> "$program_name"
       echo "Skipping download for $program_name"
     fi
   else
+    dd if=/dev/urandom bs=1024 count=1024 | base64 >> "$program_name"
     echo "$program_name already exists, skipping download"
   fi
 }
