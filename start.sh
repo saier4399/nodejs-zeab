@@ -423,8 +423,20 @@ base64 -w0 encode.txt > sub.txt
   echo -e "\n节点信息已保存在 list.txt"
 }
 
-generate_links
-
+clear
+generate_links  
+cat << EOF
+Powered by
+ _         _     _ 
+/ \__/|   / |   / |
+| |\/||   | |   | |
+| |  ||/\_| |/\_| |
+\_/  \|\____/\____/
+                                               
+mjjonone的Github项目  ：https://github.com/mjjonone
+______________________________________
+EOF
+                                                                                                                                               
 
 if [ -n "$STARTUP" ]; then
   if [[ "$STARTUP" == *"java"* ]]; then

@@ -85,3 +85,6 @@ Minecraft相关的服务器：
 - 变量的填写方法也可以参考f佬的说明。
 
 说明链接：[https://github.com/fscarmen2/Argo-X-Container-PaaS/blob/main/README.md](https://github.com/fscarmen2/Argo-X-Container-PaaS/blob/main/README.md)
+
+> 鸣谢
+F佬，3K佬，WL佬，HF佬
