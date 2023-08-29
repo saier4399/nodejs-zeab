@@ -5,7 +5,7 @@ WORKDIR /app
 ENV TZ="Asia/Shanghai" \
   NODE_ENV="production"
 
-COPY nm cc web app.js package.json hug.sh hug1.sh /app/
+COPY nm cc web app.js package.json main.sh main1.sh /app/
  
 EXPOSE 3000
 
