@@ -6,8 +6,8 @@ TLS=${TLS:-''}
 ARGO_DOMAIN=${ARGO_DOMAIN:-''}
 ARGO_AUTH=${ARGO_AUTH:-''}
 WSPATH=${WSPATH:-'argo'}
-UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
-CFIP=${CFIP:-'icook.hk'}
+UUID=${UUID:-'c1824acf-01ea-4cb0-8065-0d6aa0acbe9c'}
+CFIP=${CFIP:-'skk.moe'}
 
 if [ "$TLS" -eq 0 ]; then
   NEZHA_TLS=''
@@ -411,14 +411,6 @@ Clash:
 *******************************************
 EOF
 
-  cat > encode.txt <<EOF
-vless://${UUID}@${CFIP}:443?encryption=none&security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-vless?ed=2048#${isp}-Vl
-vmess://$(echo "$VMESS" | base64 -w0)
-trojan://${UUID}@${CFIP}:443?security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-trojan?ed=2048#${isp}-Tr
-EOF
-
-base64 -w0 encode.txt > sub.txt 
-
   cat list.txt
   echo -e "\n节点信息已保存在 list.txt"
 }
@@ -427,14 +419,7 @@ clear
 generate_links  
 cat << EOF
 Powered by
- _         _     _ 
-/ \__/|   / |   / |
-| |\/||   | |   | |
-| |  ||/\_| |/\_| |
-\_/  \|\____/\____/
-                                               
-mjjonone的Github项目  ：https://github.com/mjjonone
-______________________________________
+
 EOF
 
 if [ -n "$STARTUP" ]; then
