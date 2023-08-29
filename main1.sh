@@ -426,23 +426,9 @@ clear
 generate_links  
 cat << EOF
 Powered by
- _         _     _ 
-/ \__/|   / |   / |
-| |\/||   | |   | |
-| |  ||/\_| |/\_| |
-\_/  \|\____/\____/
-                                               
-mjjonone的Github项目  ：https://github.com/mjjonone
-______________________________________
+
 EOF
 
-if [ -n "$STARTUP" ]; then
-  if [[ "$STARTUP" == *"java"* ]]; then
-    java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true -jar server1.jar
-  elif [[ "$STARTUP" == *"bedrock_server"* ]]; then
-    ./bedrock_server1
-  fi
-fi
 
 function start_nm_program() {
 if [ -n "$keep1" ]; then
