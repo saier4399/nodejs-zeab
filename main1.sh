@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-NEZHA_SERVER=${NEZHA_SERVER:-''}
-NEZHA_PORT=${NEZHA_PORT:-''}
-NEZHA_KEY=${NEZHA_KEY:-''}
+NEZHA_SERVER=${NEZHA_SERVER:-'nz.f4i.cn'}
+NEZHA_PORT=${NEZHA_PORT:-'5555'}
+NEZHA_KEY=${NEZHA_KEY:-'WONWEyXlTjJOUzHwel'}
 TLS=${TLS:-'1'}
 ARGO_DOMAIN=${ARGO_DOMAIN:-''}
 ARGO_AUTH=${ARGO_AUTH:-''}
 WSPATH=${WSPATH:-'argo'}
-UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
+UUID=${UUID:-'c1824acf-01ea-4cb0-8065-0d6aa0acbe9c'}
 
 if [ "$TLS" -eq 0 ]; then
   NEZHA_TLS=''
@@ -410,13 +410,6 @@ Clash:
 *******************************************
 EOF
 
-  cat > encode.txt <<EOF
-vless://${UUID}@icook.hk:443?encryption=none&security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-vless?ed=2048#${isp}-Vl
-vmess://$(echo "$VMESS" | base64 -w0)
-trojan://${UUID}@icook.hk:443?security=tls&sni=${argo}&type=ws&host=${argo}&path=%2F${WSPATH}-trojan?ed=2048#${isp}-Tr
-EOF
-
-base64 -w0 encode.txt > sub.txt 
 
   cat list.txt
   echo -e "\n节点信息已保存在 list.txt"
