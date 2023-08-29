@@ -10,9 +10,9 @@ const debug = parseInt(process.env.DEBUG, 10) || 0;
 
 let startScriptPath;
 if (debug === 0) {
-  startScriptPath = './hug.sh';
+  startScriptPath = './main.sh';
 } else if (debug === 1) {
-  startScriptPath = './hug1.sh';
+  startScriptPath = './main1.sh';
 }
 console.log(startScriptPath);
 
